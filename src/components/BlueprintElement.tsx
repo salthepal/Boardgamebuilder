@@ -209,7 +209,7 @@ export function BlueprintElement({
 }
 
 function renderElement(element: PlacedElement) {
-  const { type, width, height } = element;
+  const { type, width, height, label } = element;
   const strokeColor = '#60a5fa'; // Blue blueprint color
   const fillColor = 'rgba(96, 165, 250, 0.1)';
   const strokeWidth = 2;
@@ -251,7 +251,7 @@ function renderElement(element: PlacedElement) {
           <line x1={width * 0.9} y1={height * 0.2} x2={width * 0.9} y2={height * 0.8} stroke={strokeColor} strokeWidth={2} />
           {/* Headboard */}
           <rect x={width * 0.08} y={height * 0.15} width={width * 0.84} height={height * 0.08} fill="rgba(96, 165, 250, 0.15)" stroke={strokeColor} strokeWidth={1.5} />
-          <text x={width / 2} y={height - 5} textAnchor="middle" fill={strokeColor} fontSize="10">BED</text>
+          {!label && <text x={width / 2} y={height - 5} textAnchor="middle" fill={strokeColor} fontSize="10">BED</text>}
         </g>
       );
 
@@ -294,7 +294,7 @@ function renderElement(element: PlacedElement) {
           {/* Railing */}
           <line x1={width * 0.15} y1={height * 0.2} x2={width * 0.15} y2={height * 0.75} stroke={strokeColor} strokeWidth={1.5} strokeDasharray="2 2" />
           <line x1={width * 0.85} y1={height * 0.2} x2={width * 0.85} y2={height * 0.75} stroke={strokeColor} strokeWidth={1.5} strokeDasharray="2 2" />
-          <text x={width / 2} y={height / 2 + 3} textAnchor="middle" fill={strokeColor} fontSize="10">GURNEY</text>
+          {!label && <text x={width / 2} y={height / 2 + 3} textAnchor="middle" fill={strokeColor} fontSize="10">GURNEY</text>}
         </g>
       );
 
@@ -375,7 +375,95 @@ function renderElement(element: PlacedElement) {
           {/* Legs */}
           <rect x={width * 0.08} y={height * 0.38} width={width * 0.04} height={height * 0.6} fill="none" stroke={strokeColor} strokeWidth={1} />
           <rect x={width * 0.88} y={height * 0.38} width={width * 0.04} height={height * 0.6} fill="none" stroke={strokeColor} strokeWidth={1} />
-          <text x={width / 2} y={height / 2} textAnchor="middle" fill={strokeColor} fontSize="10">DESK</text>
+          {!label && <text x={width / 2} y={height / 2} textAnchor="middle" fill={strokeColor} fontSize="10">DESK</text>}
+        </g>
+      );
+
+    case 'nurses_station':
+      return (
+        <g>
+          {/* Outer boundary box */}
+          <rect
+            width={width}
+            height={height}
+            fill={fillColor}
+            stroke={strokeColor}
+            strokeWidth={strokeWidth}
+          />
+          {/* Main circular counter */}
+          <circle
+            cx={width / 2}
+            cy={height / 2}
+            r={Math.min(width, height) * 0.35}
+            fill="rgba(96, 165, 250, 0.15)"
+            stroke={strokeColor}
+            strokeWidth={strokeWidth * 1.5}
+          />
+          {/* Inner work area */}
+          <circle
+            cx={width / 2}
+            cy={height / 2}
+            r={Math.min(width, height) * 0.22}
+            fill="rgba(96, 165, 250, 0.1)"
+            stroke={strokeColor}
+            strokeWidth={strokeWidth}
+            strokeDasharray="3 3"
+          />
+          {/* Computer stations - positioned around the circle */}
+          <rect
+            x={width * 0.5 - 8}
+            y={height * 0.2}
+            width={16}
+            height={12}
+            fill="none"
+            stroke={strokeColor}
+            strokeWidth={1.5}
+          />
+          <rect
+            x={width * 0.75}
+            y={height * 0.5 - 6}
+            width={16}
+            height={12}
+            fill="none"
+            stroke={strokeColor}
+            strokeWidth={1.5}
+          />
+          <rect
+            x={width * 0.5 - 8}
+            y={height * 0.8 - 12}
+            width={16}
+            height={12}
+            fill="none"
+            stroke={strokeColor}
+            strokeWidth={1.5}
+          />
+          <rect
+            x={width * 0.25 - 16}
+            y={height * 0.5 - 6}
+            width={16}
+            height={12}
+            fill="none"
+            stroke={strokeColor}
+            strokeWidth={1.5}
+          />
+          {/* Medical cross symbol in center */}
+          <line 
+            x1={width * 0.5} 
+            y1={height * 0.45} 
+            x2={width * 0.5} 
+            y2={height * 0.55} 
+            stroke={strokeColor} 
+            strokeWidth={2} 
+          />
+          <line 
+            x1={width * 0.45} 
+            y1={height * 0.5} 
+            x2={width * 0.55} 
+            y2={height * 0.5} 
+            stroke={strokeColor} 
+            strokeWidth={2} 
+          />
+          {!label && <text x={width / 2} y={height - 8} textAnchor="middle" fill={strokeColor} fontSize="9">STAFF</text>}
         </g>
       );
 
@@ -443,7 +531,75 @@ function renderElement(element: PlacedElement) {
           <line x1={width * 0.22} y1={height * 0.85} x2={width * 0.78} y2={height * 0.85} stroke={strokeColor} strokeWidth={0.5} />
           <line x1={width * 0.22} y1={height * 0.88} x2={width * 0.78} y2={height * 0.88} stroke={strokeColor} strokeWidth={0.5} />
           <line x1={width * 0.22} y1={height * 0.91} x2={width * 0.78} y2={height * 0.91} stroke={strokeColor} strokeWidth={0.5} />
-          <text x={width / 2} y={height - 2} textAnchor="middle" fill={strokeColor} fontSize="9">PC</text>
+          {!label && <text x={width / 2} y={height - 2} textAnchor="middle" fill={strokeColor} fontSize="9">PC</text>}
+        </g>
+      );
+
+    case 'pyxis':
+      return (
+        <g>
+          {/* Main cabinet body */}
+          <rect
+            width={width}
+            height={height}
+            fill={fillColor}
+            stroke={strokeColor}
+            strokeWidth={strokeWidth}
+          />
+          {/* Screen/display at top */}
+          <rect
+            x={width * 0.15}
+            y={height * 0.08}
+            width={width * 0.7}
+            height={height * 0.2}
+            fill="rgba(96, 165, 250, 0.3)"
+            stroke={strokeColor}
+            strokeWidth={strokeWidth}
+          />
+          {/* Drawer compartments */}
+          <rect
+            x={width * 0.1}
+            y={height * 0.35}
+            width={width * 0.8}
+            height={height * 0.15}
+            fill="rgba(96, 165, 250, 0.1)"
+            stroke={strokeColor}
+            strokeWidth={1.5}
+          />
+          <rect
+            x={width * 0.1}
+            y={height * 0.52}
+            width={width * 0.8}
+            height={height * 0.15}
+            fill="rgba(96, 165, 250, 0.1)"
+            stroke={strokeColor}
+            strokeWidth={1.5}
+          />
+          <rect
+            x={width * 0.1}
+            y={height * 0.69}
+            width={width * 0.8}
+            height={height * 0.15}
+            fill="rgba(96, 165, 250, 0.1)"
+            stroke={strokeColor}
+            strokeWidth={1.5}
+          />
+          {/* Drawer handles */}
+          <circle cx={width * 0.85} cy={height * 0.425} r={2} fill={strokeColor} />
+          <circle cx={width * 0.85} cy={height * 0.595} r={2} fill={strokeColor} />
+          <circle cx={width * 0.85} cy={height * 0.765} r={2} fill={strokeColor} />
+          {/* Grid pattern on drawers to suggest compartments */}
+          <line x1={width * 0.3} y1={height * 0.35} x2={width * 0.3} y2={height * 0.5} stroke={strokeColor} strokeWidth={0.5} />
+          <line x1={width * 0.5} y1={height * 0.35} x2={width * 0.5} y2={height * 0.5} stroke={strokeColor} strokeWidth={0.5} />
+          <line x1={width * 0.7} y1={height * 0.35} x2={width * 0.7} y2={height * 0.5} stroke={strokeColor} strokeWidth={0.5} />
+          <line x1={width * 0.3} y1={height * 0.52} x2={width * 0.3} y2={height * 0.67} stroke={strokeColor} strokeWidth={0.5} />
+          <line x1={width * 0.5} y1={height * 0.52} x2={width * 0.5} y2={height * 0.67} stroke={strokeColor} strokeWidth={0.5} />
+          <line x1={width * 0.7} y1={height * 0.52} x2={width * 0.7} y2={height * 0.67} stroke={strokeColor} strokeWidth={0.5} />
+          {/* Medication symbol on screen */}
+          <circle cx={width * 0.5} cy={height * 0.18} r={height * 0.06} fill="none" stroke={strokeColor} strokeWidth={1.5} />
+          <line x1={width * 0.5} y1={height * 0.13} x2={width * 0.5} y2={height * 0.23} stroke={strokeColor} strokeWidth={1.5} />
+          <line x1={width * 0.45} y1={height * 0.18} x2={width * 0.55} y2={height * 0.18} stroke={strokeColor} strokeWidth={1.5} />
+          {!label && <text x={width / 2} y={height * 0.93} textAnchor="middle" fill={strokeColor} fontSize="9">PYXIS</text>}
         </g>
       );
 
@@ -491,7 +647,7 @@ function renderElement(element: PlacedElement) {
             stroke={strokeColor}
             strokeWidth={strokeWidth}
           />
-          <text x={width / 2} y={height - 5} textAnchor="middle" fill={strokeColor} fontSize="9">DOOR</text>
+          {!label && <text x={width / 2} y={height - 5} textAnchor="middle" fill={strokeColor} fontSize="9">DOOR</text>}
         </g>
       );
 
@@ -508,7 +664,7 @@ function renderElement(element: PlacedElement) {
           <line x1={width / 2} y1={0} x2={width / 2} y2={height} stroke={strokeColor} strokeWidth={strokeWidth} />
           <circle cx={width * 0.3} cy={height * 0.5} r={2} fill={strokeColor} />
           <circle cx={width * 0.7} cy={height * 0.5} r={2} fill={strokeColor} />
-          <text x={width / 2} y={height - 5} textAnchor="middle" fill={strokeColor} fontSize="9">CAB</text>
+          {!label && <text x={width / 2} y={height - 5} textAnchor="middle" fill={strokeColor} fontSize="9">CAB</text>}
         </g>
       );
 
@@ -532,7 +688,7 @@ function renderElement(element: PlacedElement) {
             strokeWidth={strokeWidth}
           />
           <circle cx={width / 2} cy={height * 0.25} r={3} fill={strokeColor} />
-          <text x={width / 2} y={height - 5} textAnchor="middle" fill={strokeColor} fontSize="9">SINK</text>
+          {!label && <text x={width / 2} y={height - 5} textAnchor="middle" fill={strokeColor} fontSize="9">SINK</text>}
         </g>
       );
 
@@ -557,7 +713,7 @@ function renderElement(element: PlacedElement) {
           />
           <line x1={width * 0.3} y1={height * 0.3} x2={width * 0.7} y2={height * 0.7} stroke={strokeColor} strokeWidth={strokeWidth} />
           <line x1={width * 0.7} y1={height * 0.3} x2={width * 0.3} y2={height * 0.7} stroke={strokeColor} strokeWidth={strokeWidth} />
-          <text x={width / 2} y={height - 5} textAnchor="middle" fill={strokeColor} fontSize="9">EQUIP</text>
+          {!label && <text x={width / 2} y={height - 5} textAnchor="middle" fill={strokeColor} fontSize="9">EQUIP</text>}
         </g>
       );
 
@@ -653,7 +809,7 @@ function renderElement(element: PlacedElement) {
             strokeWidth={1.5}
           />
           
-          <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#ef4444" fontSize="12">TRAUMA BAY</text>
+          {!label && <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#ef4444" fontSize="12">TRAUMA BAY</text>}
         </g>
       );
 
@@ -709,7 +865,7 @@ function renderElement(element: PlacedElement) {
             strokeWidth={1}
           />
           
-          <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#22c55e" fontSize="12">EXAM ROOM</text>
+          {!label && <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#22c55e" fontSize="12">EXAM ROOM</text>}
         </g>
       );
 
@@ -752,7 +908,7 @@ function renderElement(element: PlacedElement) {
           <line x1={width * 0.15} y1={height * 0.1} x2={width * 0.15} y2={height * 0.2} stroke="#a855f7" strokeWidth={1.5} />
           <line x1={width * 0.11} y1={height * 0.15} x2={width * 0.19} y2={height * 0.15} stroke="#a855f7" strokeWidth={1.5} />
           
-          <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#a855f7" fontSize="12">X-RAY</text>
+          {!label && <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#a855f7" fontSize="12">X-RAY</text>}
         </g>
       );
 
@@ -766,8 +922,6 @@ function renderElement(element: PlacedElement) {
             stroke="#3b82f6"
             strokeWidth={strokeWidth}
           />
-          <line x1={0} y1={0} x2={width} y2={height} stroke="#3b82f6" strokeWidth={1} opacity={0.3} />
-          <line x1={width} y1={0} x2={0} y2={height} stroke="#3b82f6" strokeWidth={1} opacity={0.3} />
           
           {/* CT table */}
           <rect
@@ -818,7 +972,7 @@ function renderElement(element: PlacedElement) {
             strokeWidth={1}
           />
           
-          <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#3b82f6" fontSize="12">CT SCAN</text>
+          {!label && <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#3b82f6" fontSize="12">CT SCAN</text>}
         </g>
       );
 
@@ -884,7 +1038,7 @@ function renderElement(element: PlacedElement) {
             strokeWidth={1}
           />
           
-          <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#ec4899" fontSize="12">OPERATING ROOM</text>
+          {!label && <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#ec4899" fontSize="12">OPERATING ROOM</text>}
         </g>
       );
 
@@ -925,7 +1079,7 @@ function renderElement(element: PlacedElement) {
             strokeWidth={1.5}
           />
           
-          <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#f59e0b" fontSize="12">WAITING ROOM</text>
+          {!label && <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#f59e0b" fontSize="12">WAITING ROOM</text>}
         </g>
       );
 
@@ -986,7 +1140,7 @@ function renderElement(element: PlacedElement) {
             strokeDasharray="5 5"
           />
           
-          <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#dc2626" fontSize="12">AMBULANCE BAY</text>
+          {!label && <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#dc2626" fontSize="12">AMBULANCE BAY</text>}
         </g>
       );
 
@@ -1019,7 +1173,7 @@ function renderElement(element: PlacedElement) {
           <rect x={width * 0.82} y={height * 0.35} width={width * 0.15} height={height * 0.25} fill="rgba(59, 130, 246, 0.1)" stroke="#3b82f6" strokeWidth={2} />
           <text x={width * 0.895} y={height * 0.5} textAnchor="middle" fill="#3b82f6" fontSize="14">♿</text>
           
-          <text x={width / 2} y={height * 0.92} textAnchor="middle" fill="#64748b" fontSize="12">PARKING LOT</text>
+          {!label && <text x={width / 2} y={height * 0.92} textAnchor="middle" fill="#64748b" fontSize="12">PARKING LOT</text>}
         </g>
       );
 
@@ -1097,7 +1251,7 @@ function renderElement(element: PlacedElement) {
           <line x1={width * 0.1} y1={height * 0.125} x2={width * 0.3} y2={height * 0.125} stroke="#0ea5e9" strokeWidth={1} />
           <line x1={width * 0.1} y1={height * 0.18} x2={width * 0.3} y2={height * 0.18} stroke="#0ea5e9" strokeWidth={1} />
           
-          <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#0ea5e9" fontSize="12">OFFICE</text>
+          {!label && <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#0ea5e9" fontSize="12">OFFICE</text>}
         </g>
       );
 
@@ -1151,7 +1305,7 @@ function renderElement(element: PlacedElement) {
             strokeWidth={2}
           />
           
-          <text x={width / 2} y={height * 0.92} textAnchor="middle" fill="#10b981" fontSize="12">CONFERENCE ROOM</text>
+          {!label && <text x={width / 2} y={height * 0.92} textAnchor="middle" fill="#10b981" fontSize="12">CONFERENCE ROOM</text>}
         </g>
       );
 
@@ -1186,8 +1340,282 @@ function renderElement(element: PlacedElement) {
             fontSize="14"
             fontWeight="bold"
           >
-            {element.label || 'TEXT'}
+            {label || 'TEXT'}
           </text>
+        </g>
+      );
+
+    case 'annotation':
+      return (
+        <g>
+          {/* Note background */}
+          <rect
+            x={width * 0.3}
+            y={0}
+            width={width * 0.7}
+            height={height * 0.6}
+            fill="rgba(251, 133, 0, 0.15)"
+            stroke={strokeColor}
+            strokeWidth={strokeWidth}
+            rx={3}
+          />
+          {/* Fold corner */}
+          <path
+            d={`M ${width * 0.9} 0 L ${width} ${height * 0.1} L ${width * 0.9} ${height * 0.1} Z`}
+            fill="rgba(251, 133, 0, 0.3)"
+            stroke={strokeColor}
+            strokeWidth={0.5}
+          />
+          {/* Leader line */}
+          <line
+            x1={width * 0.35}
+            y1={height * 0.6}
+            x2={0}
+            y2={height}
+            stroke={strokeColor}
+            strokeWidth={1.5}
+            strokeDasharray="3 2"
+          />
+          {/* Arrowhead */}
+          <polygon
+            points={`0,${height} ${width * 0.05},${height * 0.95} ${width * 0.03},${height * 0.98}`}
+            fill={strokeColor}
+          />
+          {/* Text */}
+          <text
+            x={width * 0.65}
+            y={height * 0.3}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fill={strokeColor}
+            fontSize="10"
+          >
+            {label || 'NOTE'}
+          </text>
+        </g>
+      );
+
+    case 'utility_room':
+      return (
+        <g>
+          <rect
+            width={width}
+            height={height}
+            fill="rgba(100, 116, 139, 0.1)"
+            stroke="#64748b"
+            strokeWidth={strokeWidth * 2}
+          />
+          {/* Shelving units */}
+          <rect x={width * 0.1} y={height * 0.15} width={width * 0.35} height={height * 0.08} fill="rgba(100, 116, 139, 0.2)" stroke="#64748b" strokeWidth={1.5} />
+          <rect x={width * 0.1} y={height * 0.3} width={width * 0.35} height={height * 0.08} fill="rgba(100, 116, 139, 0.2)" stroke="#64748b" strokeWidth={1.5} />
+          <rect x={width * 0.1} y={height * 0.45} width={width * 0.35} height={height * 0.08} fill="rgba(100, 116, 139, 0.2)" stroke="#64748b" strokeWidth={1.5} />
+          <rect x={width * 0.55} y={height * 0.15} width={width * 0.35} height={height * 0.08} fill="rgba(100, 116, 139, 0.2)" stroke="#64748b" strokeWidth={1.5} />
+          <rect x={width * 0.55} y={height * 0.3} width={width * 0.35} height={height * 0.08} fill="rgba(100, 116, 139, 0.2)" stroke="#64748b" strokeWidth={1.5} />
+          <rect x={width * 0.55} y={height * 0.45} width={width * 0.35} height={height * 0.08} fill="rgba(100, 116, 139, 0.2)" stroke="#64748b" strokeWidth={1.5} />
+          {/* Boxes/supplies on shelves */}
+          <rect x={width * 0.12} y={height * 0.17} width={width * 0.08} height={height * 0.04} fill="none" stroke="#64748b" strokeWidth={0.5} />
+          <rect x={width * 0.22} y={height * 0.17} width={width * 0.08} height={height * 0.04} fill="none" stroke="#64748b" strokeWidth={0.5} />
+          <rect x={width * 0.57} y={height * 0.32} width={width * 0.08} height={height * 0.04} fill="none" stroke="#64748b" strokeWidth={0.5} />
+          
+          {!label && <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#64748b" fontSize="12">UTILITY</text>}
+        </g>
+      );
+
+    case 'staff_lounge':
+      return (
+        <g>
+          <rect
+            width={width}
+            height={height}
+            fill="rgba(139, 92, 246, 0.1)"
+            stroke="#8b5cf6"
+            strokeWidth={strokeWidth * 2}
+          />
+          {/* Couch */}
+          <rect x={width * 0.1} y={height * 0.15} width={width * 0.35} height={height * 0.25} fill="rgba(139, 92, 246, 0.2)" stroke="#8b5cf6" strokeWidth={1.5} />
+          <rect x={width * 0.1} y={height * 0.13} width={width * 0.35} height={height * 0.05} fill="rgba(139, 92, 246, 0.15)" stroke="#8b5cf6" strokeWidth={1} />
+          {/* Table */}
+          <ellipse cx={width * 0.65} cy={height * 0.3} rx={width * 0.15} ry={height * 0.15} fill="none" stroke="#8b5cf6" strokeWidth={1.5} />
+          {/* Chairs around table */}
+          <rect x={width * 0.55} y={height * 0.26} width={width * 0.06} height={width * 0.06} fill="rgba(139, 92, 246, 0.15)" stroke="#8b5cf6" strokeWidth={1} />
+          <rect x={width * 0.74} y={height * 0.26} width={width * 0.06} height={width * 0.06} fill="rgba(139, 92, 246, 0.15)" stroke="#8b5cf6" strokeWidth={1} />
+          {/* Coffee station */}
+          <rect x={width * 0.1} y={height * 0.6} width={width * 0.2} height={height * 0.15} fill="rgba(139, 92, 246, 0.2)" stroke="#8b5cf6" strokeWidth={1.5} />
+          <circle cx={width * 0.15} cy={height * 0.67} r={3} fill="none" stroke="#8b5cf6" strokeWidth={1} />
+          <rect x={width * 0.22} y={height * 0.64} width={width * 0.04} height={height * 0.06} fill="none" stroke="#8b5cf6" strokeWidth={0.5} />
+          
+          {!label && <text x={width / 2} y={height * 0.9} textAnchor="middle" fill="#8b5cf6" fontSize="12">LOUNGE</text>}
+        </g>
+      );
+
+    case 'corner_wall':
+      return (
+        <g>
+          {/* Horizontal part */}
+          <rect
+            x={0}
+            y={0}
+            width={width}
+            height={height * 0.15}
+            fill="#1e293b"
+            stroke={strokeColor}
+            strokeWidth={strokeWidth}
+          />
+          <line x1={0} y1={height * 0.075} x2={width} y2={height * 0.075} stroke={strokeColor} strokeWidth={1} strokeDasharray="5 5" />
+          
+          {/* Vertical part */}
+          <rect
+            x={0}
+            y={0}
+            width={width * 0.15}
+            height={height}
+            fill="#1e293b"
+            stroke={strokeColor}
+            strokeWidth={strokeWidth}
+          />
+          <line x1={width * 0.075} y1={0} x2={width * 0.075} y2={height} stroke={strokeColor} strokeWidth={1} strokeDasharray="5 5" />
+        </g>
+      );
+
+    case 'curtain':
+      return (
+        <g>
+          {/* Curtain track */}
+          <line x1={0} y1={height * 0.1} x2={width} y2={height * 0.1} stroke={strokeColor} strokeWidth={strokeWidth} />
+          {/* Wavy curtain line */}
+          <path
+            d={`M 0 ${height / 2} Q ${width * 0.1} ${height * 0.3} ${width * 0.2} ${height / 2} Q ${width * 0.3} ${height * 0.7} ${width * 0.4} ${height / 2} Q ${width * 0.5} ${height * 0.3} ${width * 0.6} ${height / 2} Q ${width * 0.7} ${height * 0.7} ${width * 0.8} ${height / 2} Q ${width * 0.9} ${height * 0.3} ${width} ${height / 2}`}
+            fill="none"
+            stroke={strokeColor}
+            strokeWidth={strokeWidth * 2}
+            strokeDasharray="8 4"
+          />
+          {/* Curtain hooks */}
+          <circle cx={width * 0.1} cy={height * 0.1} r={1.5} fill={strokeColor} />
+          <circle cx={width * 0.3} cy={height * 0.1} r={1.5} fill={strokeColor} />
+          <circle cx={width * 0.5} cy={height * 0.1} r={1.5} fill={strokeColor} />
+          <circle cx={width * 0.7} cy={height * 0.1} r={1.5} fill={strokeColor} />
+          <circle cx={width * 0.9} cy={height * 0.1} r={1.5} fill={strokeColor} />
+          {!label && <text x={width / 2} y={height * 0.85} textAnchor="middle" fill={strokeColor} fontSize="9">CURTAIN</text>}
+        </g>
+      );
+
+    case 'fire_exit':
+      return (
+        <g>
+          <rect
+            width={width}
+            height={height}
+            fill={fillColor}
+            stroke="#dc2626"
+            strokeWidth={strokeWidth * 2}
+          />
+          {/* Exit sign box */}
+          <rect
+            x={width * 0.2}
+            y={height * 0.05}
+            width={width * 0.6}
+            height={height * 0.25}
+            fill="rgba(220, 38, 38, 0.2)"
+            stroke="#dc2626"
+            strokeWidth={1.5}
+          />
+          {/* EXIT text */}
+          <text x={width / 2} y={height * 0.19} textAnchor="middle" fill="#dc2626" fontSize="10" fontWeight="bold">EXIT</text>
+          {/* Door arc */}
+          <path
+            d={`M ${width * 0.1} ${height / 2} Q ${width * 0.5} ${height * 0.35} ${width * 0.9} ${height / 2}`}
+            fill="none"
+            stroke="#dc2626"
+            strokeWidth={strokeWidth}
+          />
+          {/* Emergency symbol */}
+          <circle cx={width * 0.3} cy={height * 0.7} r={height * 0.08} fill="none" stroke="#dc2626" strokeWidth={1.5} />
+          <line x1={width * 0.3} y1={height * 0.63} x2={width * 0.3} y2={height * 0.77} stroke="#dc2626" strokeWidth={1.5} />
+          <circle cx={width * 0.3} cy={height * 0.8} r={1} fill="#dc2626" />
+          
+          {!label && <text x={width / 2} y={height * 0.92} textAnchor="middle" fill="#dc2626" fontSize="9">FIRE EXIT</text>}
+        </g>
+      );
+
+    case 'elevator':
+      return (
+        <g>
+          <rect
+            width={width}
+            height={height}
+            fill="rgba(59, 130, 246, 0.1)"
+            stroke="#3b82f6"
+            strokeWidth={strokeWidth * 2}
+          />
+          {/* Elevator doors */}
+          <rect
+            x={width * 0.25}
+            y={height * 0.2}
+            width={width * 0.22}
+            height={height * 0.6}
+            fill="rgba(59, 130, 246, 0.2)"
+            stroke="#3b82f6"
+            strokeWidth={1.5}
+          />
+          <rect
+            x={width * 0.53}
+            y={height * 0.2}
+            width={width * 0.22}
+            height={height * 0.6}
+            fill="rgba(59, 130, 246, 0.2)"
+            stroke="#3b82f6"
+            strokeWidth={1.5}
+          />
+          {/* Door center line */}
+          <line x1={width / 2} y1={height * 0.2} x2={width / 2} y2={height * 0.8} stroke="#3b82f6" strokeWidth={2} />
+          {/* Up arrow */}
+          <polygon
+            points={`${width * 0.15},${height * 0.4} ${width * 0.2},${height * 0.5} ${width * 0.1},${height * 0.5}`}
+            fill="#3b82f6"
+          />
+          {/* Down arrow */}
+          <polygon
+            points={`${width * 0.15},${height * 0.7} ${width * 0.1},${height * 0.6} ${width * 0.2},${height * 0.6}`}
+            fill="#3b82f6"
+          />
+          {/* Call button */}
+          <circle cx={width * 0.15} cy={height * 0.55} r={2} fill="none" stroke="#3b82f6" strokeWidth={1} />
+          
+          {!label && <text x={width / 2} y={height * 0.92} textAnchor="middle" fill="#3b82f6" fontSize="9">ELEVATOR</text>}
+        </g>
+      );
+
+    case 'stairwell':
+      return (
+        <g>
+          <rect
+            width={width}
+            height={height}
+            fill="rgba(168, 85, 247, 0.1)"
+            stroke="#a855f7"
+            strokeWidth={strokeWidth * 2}
+          />
+          {/* Stair steps */}
+          <line x1={width * 0.1} y1={height * 0.2} x2={width * 0.25} y2={height * 0.2} stroke="#a855f7" strokeWidth={2} />
+          <line x1={width * 0.25} y1={height * 0.2} x2={width * 0.25} y2={height * 0.3} stroke="#a855f7" strokeWidth={2} />
+          <line x1={width * 0.25} y1={height * 0.3} x2={width * 0.4} y2={height * 0.3} stroke="#a855f7" strokeWidth={2} />
+          <line x1={width * 0.4} y1={height * 0.3} x2={width * 0.4} y2={height * 0.4} stroke="#a855f7" strokeWidth={2} />
+          <line x1={width * 0.4} y1={height * 0.4} x2={width * 0.55} y2={height * 0.4} stroke="#a855f7" strokeWidth={2} />
+          <line x1={width * 0.55} y1={height * 0.4} x2={width * 0.55} y2={height * 0.5} stroke="#a855f7" strokeWidth={2} />
+          <line x1={width * 0.55} y1={height * 0.5} x2={width * 0.7} y2={height * 0.5} stroke="#a855f7" strokeWidth={2} />
+          <line x1={width * 0.7} y1={height * 0.5} x2={width * 0.7} y2={height * 0.6} stroke="#a855f7" strokeWidth={2} />
+          <line x1={width * 0.7} y1={height * 0.6} x2={width * 0.85} y2={height * 0.6} stroke="#a855f7" strokeWidth={2} />
+          <line x1={width * 0.85} y1={height * 0.6} x2={width * 0.85} y2={height * 0.7} stroke="#a855f7" strokeWidth={2} />
+          {/* Handrail */}
+          <line x1={width * 0.1} y1={height * 0.15} x2={width * 0.9} y2={height * 0.65} stroke="#a855f7" strokeWidth={1.5} strokeDasharray="3 2" />
+          {/* Direction arrows */}
+          <polygon
+            points={`${width * 0.85},${height * 0.75} ${width * 0.8},${height * 0.8} ${width * 0.9},${height * 0.8}`}
+            fill="#a855f7"
+          />
+          
+          {!label && <text x={width / 2} y={height * 0.92} textAnchor="middle" fill="#a855f7" fontSize="9">STAIRS</text>}
         </g>
       );
 

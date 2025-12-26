@@ -1,5 +1,5 @@
 import { useDrag } from 'react-dnd';
-import { Bed, Armchair, Monitor, Refrigerator, Droplet, Activity, Square, DoorOpen, Heart, XCircle, Scan, Scissors, Users, Ambulance, Car, Type, Briefcase, UsersRound } from 'lucide-react';
+import { Bed, Armchair, Monitor, Refrigerator, Droplet, Activity, Square, DoorOpen, Heart, XCircle, Scan, Scissors, Users, Ambulance, Car, Type, Briefcase, UsersRound, Package, Coffee, CornerDownRight, Minus, AlertTriangle, ArrowUpDown, StickyNote } from 'lucide-react';
 
 interface PaletteItem {
   type: string;
@@ -24,27 +24,36 @@ const paletteItems: PaletteItem[] = [
   { type: 'conference_room', label: 'Conference Room', icon: <UsersRound className="w-5 h-5" />, category: 'Rooms' },
   { type: 'ambulance_bay', label: 'Ambulance Bay', icon: <Ambulance className="w-5 h-5" />, category: 'Rooms' },
   { type: 'parking_lot', label: 'Parking Lot', icon: <Car className="w-5 h-5" />, category: 'Rooms' },
+  { type: 'utility_room', label: 'Utility Room', icon: <Package className="w-5 h-5" />, category: 'Rooms' },
+  { type: 'staff_lounge', label: 'Staff Lounge', icon: <Coffee className="w-5 h-5" />, category: 'Rooms' },
   
   // Structure
   { type: 'wall_h', label: 'Wall (Horizontal)', icon: <Square className="w-5 h-5" />, category: 'Structure' },
   { type: 'wall_v', label: 'Wall (Vertical)', icon: <Square className="w-5 h-5" />, category: 'Structure' },
+  { type: 'corner_wall', label: 'Corner Wall', icon: <CornerDownRight className="w-5 h-5" />, category: 'Structure' },
   { type: 'door', label: 'Door', icon: <DoorOpen className="w-5 h-5" />, category: 'Structure' },
+  { type: 'fire_exit', label: 'Fire Exit', icon: <AlertTriangle className="w-5 h-5" />, category: 'Structure' },
+  { type: 'curtain', label: 'Curtain', icon: <Minus className="w-5 h-5" />, category: 'Structure' },
+  { type: 'elevator', label: 'Elevator', icon: <ArrowUpDown className="w-5 h-5" />, category: 'Structure' },
+  { type: 'stairwell', label: 'Stairwell', icon: <ArrowUpDown className="w-5 h-5" />, category: 'Structure' },
   
   // Furniture
   { type: 'bed', label: 'Hospital Bed', icon: <Bed className="w-5 h-5" />, category: 'Furniture' },
   { type: 'gurney', label: 'Gurney', icon: <Bed className="w-5 h-5" />, category: 'Furniture' },
   { type: 'chair', label: 'Chair', icon: <Armchair className="w-5 h-5" />, category: 'Furniture' },
   { type: 'desk', label: 'Desk', icon: <Square className="w-5 h-5" />, category: 'Furniture' },
+  { type: 'nurses_station', label: 'Staff Station', icon: <UsersRound className="w-5 h-5" />, category: 'Furniture' },
+  { type: 'cabinet', label: 'Cabinet', icon: <Refrigerator className="w-5 h-5" />, category: 'Furniture' },
+  { type: 'sink', label: 'Sink', icon: <Droplet className="w-5 h-5" />, category: 'Furniture' },
   
   // Equipment
   { type: 'computer', label: 'Computer', icon: <Monitor className="w-5 h-5" />, category: 'Equipment' },
-  { type: 'equipment', label: 'Medical Equipment', icon: <Activity className="w-5 h-5" />, category: 'Equipment' },
-  { type: 'cabinet', label: 'Cabinet', icon: <Refrigerator className="w-5 h-5" />, category: 'Equipment' },
-  { type: 'sink', label: 'Sink', icon: <Droplet className="w-5 h-5" />, category: 'Equipment' },
+  { type: 'pyxis', label: 'Pyxis', icon: <Package className="w-5 h-5" />, category: 'Equipment' },
   
   // Symbols
   { type: 'blank_box', label: 'Blank Box', icon: <Square className="w-5 h-5" />, category: 'Symbols' },
   { type: 'text_box', label: 'Text Box', icon: <Type className="w-5 h-5" />, category: 'Symbols' },
+  { type: 'annotation', label: 'Annotation', icon: <StickyNote className="w-5 h-5" />, category: 'Symbols' },
 ];
 
 function DraggableItem({ item }: { item: PaletteItem }) {

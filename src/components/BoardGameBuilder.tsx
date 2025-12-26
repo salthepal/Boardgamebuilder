@@ -7,7 +7,8 @@ import { Toolbar } from './Toolbar';
 import { AlignmentTools } from './AlignmentTools';
 import { LayerControls } from './LayerControls';
 import { ExportDialog } from './ExportDialog';
-import { Download, Upload, Grid, FileDown, Undo2, Redo2, Trash2, Search, Github } from 'lucide-react';
+import { HelpDialog } from './HelpDialog';
+import { Download, Upload, Grid, FileDown, Undo2, Redo2, Trash2, Search, Github, HelpCircle } from 'lucide-react';
 
 export interface PlacedElement {
   id: string;
@@ -40,6 +41,7 @@ export function BoardGameBuilder() {
   const [canvasBackground, setCanvasBackground] = useState('#ffffff');
   const [gridSize, setGridSize] = useState(20);
   const [showExportDialog, setShowExportDialog] = useState(false);
+  const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [componentSearch, setComponentSearch] = useState('');
   
   // Undo/Redo state
@@ -476,7 +478,7 @@ export function BoardGameBuilder() {
               <div className="flex items-center gap-3">
                 <h1 className="text-foreground">Medical Board Game Builder</h1>
                 <span className="text-xs text-muted-foreground bg-secondary px-2 py-1 rounded">
-                  v1.26
+                  v1.28
                 </span>
               </div>
               <p className="text-muted-foreground text-sm">by Sal Phadnis</p>
@@ -602,6 +604,14 @@ export function BoardGameBuilder() {
                 <Github className="w-4 h-4" />
                 GitHub
               </a>
+              <button
+                onClick={() => setShowHelpDialog(true)}
+                className="px-3 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80 flex items-center gap-1 text-sm"
+                title="Help"
+              >
+                <HelpCircle className="w-4 h-4" />
+                Help
+              </button>
             </div>
           </div>
         </div>
@@ -765,6 +775,12 @@ export function BoardGameBuilder() {
         selectedElements={selectedElements}
         canvasBackground={canvasBackground}
       />
+
+      {/* Help Dialog */}
+      <HelpDialog
+        isOpen={showHelpDialog}
+        onClose={() => setShowHelpDialog(false)}
+      />
     </DndProvider>
   );
 }
@@ -775,13 +791,19 @@ function getDefaultWidth(type: string): number {
     gurney: 100,
     chair: 40,
     desk: 100,
+    nurses_station: 120,
     computer: 60,
+    pyxis: 70,
     wall_h: 200,
     wall_v: 20,
+    corner_wall: 100,
     door: 80,
+    fire_exit: 80,
+    curtain: 150,
+    elevator: 80,
+    stairwell: 100,
     cabinet: 60,
     sink: 50,
-    equipment: 60,
     trauma_room: 180,
     exam_room: 140,
     xray_room: 160,
@@ -792,8 +814,11 @@ function getDefaultWidth(type: string): number {
     parking_lot: 260,
     office: 120,
     conference_room: 180,
+    utility_room: 120,
+    staff_lounge: 160,
     blank_box: 100,
     text_box: 150,
+    annotation: 120,
   };
   return widths[type] || 60;
 }
@@ -804,13 +829,19 @@ function getDefaultHeight(type: string): number {
     gurney: 80,
     chair: 40,
     desk: 60,
+    nurses_station: 120,
     computer: 60,
+    pyxis: 100,
     wall_h: 20,
     wall_v: 200,
+    corner_wall: 100,
     door: 20,
+    fire_exit: 100,
+    curtain: 60,
+    elevator: 100,
+    stairwell: 120,
     cabinet: 40,
     sink: 50,
-    equipment: 60,
     trauma_room: 180,
     exam_room: 140,
     xray_room: 160,
@@ -821,8 +852,11 @@ function getDefaultHeight(type: string): number {
     parking_lot: 220,
     office: 120,
     conference_room: 140,
+    utility_room: 120,
+    staff_lounge: 140,
     blank_box: 80,
     text_box: 50,
+    annotation: 100,
   };
   return heights[type] || 60;
 }
