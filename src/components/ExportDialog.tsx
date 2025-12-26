@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X, FileImage, FileType } from 'lucide-react';
 import { PlacedElement } from './BoardGameBuilder';
+import jsPDF from 'jspdf';
 
 interface ExportDialogProps {
   isOpen: boolean;
@@ -18,7 +19,9 @@ export function ExportDialog({
   canvasBackground,
 }: ExportDialogProps) {
   const [exportFormat, setExportFormat] = useState<'png' | 'svg' | 'pdf'>('png');
-  const [exportScale, setExportScale] = useState(1);
+  const [exportScale, setExportScale] = useState(2);
+  const [customScale, setCustomScale] = useState('');
+  const [useCustomScale, setUseCustomScale] = useState(false);
   const [exportSelection, setExportSelection] = useState(false);
 
   if (!isOpen) return null;
@@ -29,7 +32,7 @@ export function ExportDialog({
       : placedElements;
 
     if (exportFormat === 'png') {
-      exportAsPNG(elementsToExport, exportScale);
+      exportAsPNG(elementsToExport, useCustomScale ? parseFloat(customScale) : exportScale);
     } else if (exportFormat === 'svg') {
       exportAsSVG(elementsToExport);
     } else if (exportFormat === 'pdf') {
@@ -169,9 +172,60 @@ export function ExportDialog({
   };
 
   const exportAsPDF = (elements: PlacedElement[]) => {
-    // Note: This is a placeholder. For full PDF support, you'd import jsPDF
-    alert('PDF export requires additional library. Exporting as SVG instead.');
-    exportAsSVG(elements);
+    // Calculate bounding box
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    elements.forEach(el => {
+      minX = Math.min(minX, el.x);
+      minY = Math.min(minY, el.y);
+      maxX = Math.max(maxX, el.x + el.width);
+      maxY = Math.max(maxY, el.y + el.height + 20);
+    });
+
+    const padding = 50;
+    minX -= padding;
+    minY -= padding;
+    maxX += padding;
+    maxY += padding;
+
+    const width = maxX - minX;
+    const height = maxY - minY;
+
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("width", width.toString());
+    svg.setAttribute("height", height.toString());
+    svg.setAttribute("viewBox", `${minX} ${minY} ${width} ${height}`);
+    svg.setAttribute("xmlns", svgNS);
+
+    const bgRect = document.createElementNS(svgNS, "rect");
+    bgRect.setAttribute("x", minX.toString());
+    bgRect.setAttribute("y", minY.toString());
+    bgRect.setAttribute("width", width.toString());
+    bgRect.setAttribute("height", height.toString());
+    bgRect.setAttribute("fill", canvasBackground);
+    svg.appendChild(bgRect);
+
+    const canvasSvg = document.querySelector('.canvas-svg');
+    if (canvasSvg) {
+      const clone = canvasSvg.cloneNode(true) as SVGElement;
+      Array.from(clone.children).forEach(child => {
+        const childEl = child as SVGElement;
+        const elementId = childEl.getAttribute('data-element-id');
+        if (!elementId || elements.some(el => el.id === elementId)) {
+          svg.appendChild(child.cloneNode(true));
+        }
+      });
+    }
+
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(svg);
+    const pdf = new jsPDF();
+    const imgProps = pdf.getImageProperties(svgString);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const ratio = Math.min(pdfWidth / imgProps.width, pdfHeight / imgProps.height);
+    pdf.addImage(svgString, 'SVG', 0, 0, imgProps.width * ratio, imgProps.height * ratio);
+    pdf.save('blueprint.pdf');
   };
 
   return (
@@ -227,15 +281,18 @@ export function ExportDialog({
           {exportFormat === 'png' && (
             <div>
               <label className="block text-sm text-muted-foreground mb-2">
-                Scale (Resolution)
+                Scale (Resolution Multiplier)
               </label>
-              <div className="grid grid-cols-4 gap-2">
-                {[1, 2, 3, 4].map(scale => (
+              <div className="grid grid-cols-4 gap-2 mb-2">
+                {[1, 2, 3, 4, 5, 6, 8, 10].map(scale => (
                   <button
                     key={scale}
-                    onClick={() => setExportScale(scale)}
+                    onClick={() => {
+                      setExportScale(scale);
+                      setUseCustomScale(false);
+                    }}
                     className={`p-2 border rounded-lg text-sm ${
-                      exportScale === scale
+                      exportScale === scale && !useCustomScale
                         ? 'border-primary bg-primary/10 text-primary'
                         : 'border-border text-foreground'
                     }`}
@@ -244,6 +301,31 @@ export function ExportDialog({
                   </button>
                 ))}
               </div>
+              <div className="flex gap-2 items-center">
+                <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={useCustomScale}
+                    onChange={(e) => setUseCustomScale(e.target.checked)}
+                    className="rounded"
+                  />
+                  Custom scale:
+                </label>
+                <input
+                  type="number"
+                  min="0.1"
+                  max="20"
+                  step="0.5"
+                  value={customScale}
+                  onChange={(e) => setCustomScale(e.target.value)}
+                  disabled={!useCustomScale}
+                  placeholder="e.g. 2.5"
+                  className="flex-1 px-3 py-2 bg-background border border-border rounded-lg text-sm disabled:opacity-50"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Higher scale = larger file size, better quality. Try 4x-10x for high-res prints.
+              </p>
             </div>
           )}
 

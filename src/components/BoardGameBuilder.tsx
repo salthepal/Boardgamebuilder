@@ -7,7 +7,7 @@ import { Toolbar } from './Toolbar';
 import { AlignmentTools } from './AlignmentTools';
 import { LayerControls } from './LayerControls';
 import { ExportDialog } from './ExportDialog';
-import { Download, Upload, Grid, FileDown, Undo2, Redo2, Trash2, Search } from 'lucide-react';
+import { Download, Upload, Grid, FileDown, Undo2, Redo2, Trash2, Search, Github } from 'lucide-react';
 
 export interface PlacedElement {
   id: string;
@@ -476,7 +476,7 @@ export function BoardGameBuilder() {
               <div className="flex items-center gap-3">
                 <h1 className="text-foreground">Medical Board Game Builder</h1>
                 <span className="text-xs text-muted-foreground bg-secondary px-2 py-1 rounded">
-                  v1.24
+                  v1.26
                 </span>
               </div>
               <p className="text-muted-foreground text-sm">by Sal Phadnis</p>
@@ -592,6 +592,16 @@ export function BoardGameBuilder() {
                 <Trash2 className="w-4 h-4" />
                 Clear
               </button>
+              <a
+                href="https://github.com/salthepal/Boardgamebuilder"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80 flex items-center gap-1 text-sm"
+                title="View on GitHub"
+              >
+                <Github className="w-4 h-4" />
+                GitHub
+              </a>
             </div>
           </div>
         </div>
